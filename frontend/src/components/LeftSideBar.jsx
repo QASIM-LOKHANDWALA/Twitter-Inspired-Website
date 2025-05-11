@@ -9,6 +9,7 @@ import {
     MdLogout,
 } from "react-icons/md";
 import { FaRegCircleUser } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const LeftSideBar = () => {
     return (
@@ -23,10 +24,13 @@ const LeftSideBar = () => {
             </div>
 
             <div className="">
-                <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-100 rounded-full cursor-pointer">
+                <Link
+                    to="/"
+                    className="flex items-center my-2 px-4 py-2 hover:bg-gray-100 rounded-full cursor-pointer"
+                >
                     <MdOutlineHome size="24px" />
                     <h1 className="font-semibold text-lg ml-2">Home</h1>
-                </div>
+                </Link>
                 <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-100 rounded-full cursor-pointer">
                     <MdOutlineExplore size="24px" />
                     <h1 className="font-semibold text-lg ml-2">Explore</h1>
@@ -35,10 +39,13 @@ const LeftSideBar = () => {
                     <MdNotificationsNone size="24px" />
                     <h1 className="font-semibold text-lg ml-2">Notification</h1>
                 </div>
-                <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-100 rounded-full cursor-pointer">
+                <Link
+                    to="/profile"
+                    className="flex items-center my-2 px-4 py-2 hover:bg-gray-100 rounded-full cursor-pointer"
+                >
                     <FaRegCircleUser size="24px" />
                     <h1 className="font-semibold text-lg ml-2">Profile</h1>
-                </div>
+                </Link>
                 <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-100 rounded-full cursor-pointer">
                     <MdFavoriteBorder size="24px" />
                     <h1 className="font-semibold text-lg ml-2">Favorites</h1>
