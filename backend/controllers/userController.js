@@ -95,3 +95,30 @@ export const Logout = (req, res) => {
         success: true,
     });
 };
+
+export const BookmarkTweet = async (req, res) => {
+    try {
+        const currentUser = req.user;
+        const tweetId = req.params.id;
+
+        const user = await User.findById(currentUser);
+
+        if (user.bookmarks.includes(tweetId)) {
+            await User.findByIdAndUpdate(currentUser, {
+                $pull: { bookmarks: tweetId },
+            });
+            res.status(200).json({
+                message: "Tweet removed bookmarked.",
+            });
+        } else {
+            await User.findByIdAndUpdate(currentUser, {
+                $push: { bookmarks: tweetId },
+            });
+            res.status(200).json({
+                message: "Tweet added bookmarked.",
+            });
+        }
+    } catch (error) {
+        console.log(`Error in tweetController BookmarkTweet : ${error}`);
+    }
+};

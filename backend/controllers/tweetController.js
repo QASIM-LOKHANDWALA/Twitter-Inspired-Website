@@ -39,8 +39,6 @@ export const DeleteTweet = async (req, res) => {
 export const LikeOrDislikeTweet = async (req, res) => {
     try {
         const currentUser = req.user;
-        console.log(currentUser);
-
         const tweetId = req.params.id;
 
         const tweet = await Tweet.findById(tweetId);
