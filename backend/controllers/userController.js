@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { User } from "../models/userSchema.js";
 
 export const Register = async (req, res) => {
@@ -41,6 +42,49 @@ export const Register = async (req, res) => {
             success: true,
         });
     } catch (error) {
-        console.log(`Error in userController : ${error}`);
+        console.log(`Error in userController Register : ${error}`);
+    }
+};
+
+export const Login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(401).json({
+                message: "All fields are required.",
+                success: false,
+            });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({
+                message: "User not found with this email.",
+                success: false,
+            });
+        }
+
+        const validPassword = await bcryptjs.compare(password, user.password);
+
+        if (!validPassword) {
+            return res.status(401).json({
+                message: "Incorrect password. Try again.",
+                success: false,
+            });
+        }
+
+        const tokenData = { userId: user._id };
+        const token = jwt.sign(tokenData, process.env.JWT_SECRET, {
+            expiresIn: "1d",
+        });
+        return res
+            .status(201)
+            .cookie("token", token, { expiresIn: "1d", httpOnly: true })
+            .json({
+                message: "Login successfully.",
+                success: true,
+            });
+    } catch (error) {
+        console.log(`Error in userController Login: ${error}`);
     }
 };
