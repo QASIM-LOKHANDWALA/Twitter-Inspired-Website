@@ -96,6 +96,21 @@ export const Logout = (req, res) => {
     });
 };
 
+export const GetProfile = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const user = await User.findById(id).select("-password");
+        console.log(user);
+
+        return res.status(200).json({
+            user,
+            success: true,
+        });
+    } catch (error) {
+        console.log(`Error in userController GetProfile : ${error}`);
+    }
+};
+
 export const BookmarkTweet = async (req, res) => {
     try {
         const currentUser = req.user;
@@ -119,6 +134,29 @@ export const BookmarkTweet = async (req, res) => {
             });
         }
     } catch (error) {
-        console.log(`Error in tweetController BookmarkTweet : ${error}`);
+        console.log(`Error in userController BookmarkTweet : ${error}`);
+    }
+};
+
+export const GetOtherUsers = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const otherUsers = await User.find({ _id: { $ne: id } }).select(
+            "-password"
+        );
+
+        if (!otherUsers) {
+            return res.status(401).json({
+                messages: "Unable to find other users.",
+                success: false,
+            });
+        }
+
+        return res.status(200).json({
+            otherUsers,
+            success: true,
+        });
+    } catch (error) {
+        console.log(`Error in userController GetOtherUsers : ${error}`);
     }
 };
