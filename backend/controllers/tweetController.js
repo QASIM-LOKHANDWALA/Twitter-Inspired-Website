@@ -35,3 +35,31 @@ export const DeleteTweet = async (req, res) => {
         console.log(`Error in tweetController DeleteTweet : ${error}`);
     }
 };
+
+export const LikeOrDislikeTweet = async (req, res) => {
+    try {
+        const currentUser = req.user;
+        console.log(currentUser);
+
+        const tweetId = req.params.id;
+
+        const tweet = await Tweet.findById(tweetId);
+        if (tweet.like.includes(currentUser)) {
+            await Tweet.findByIdAndUpdate(tweetId, {
+                $pull: { like: currentUser },
+            });
+            res.status(200).json({
+                message: "A user disliked your tweet.",
+            });
+        } else {
+            await Tweet.findByIdAndUpdate(tweetId, {
+                $push: { like: currentUser },
+            });
+            res.status(200).json({
+                message: "A user liked your tweet.",
+            });
+        }
+    } catch (error) {
+        console.log(`Error in tweetController LikeOrDislikeTweet : ${error}`);
+    }
+};
