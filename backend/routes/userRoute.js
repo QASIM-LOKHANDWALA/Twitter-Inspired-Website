@@ -1,6 +1,7 @@
 import express from "express";
 import {
     BookmarkTweet,
+    FollowUser,
     GetOtherUsers,
     GetProfile,
     Login,
@@ -16,6 +17,7 @@ router.route("/login").post(Login);
 router.route("/logout").get(Logout);
 router.route("/profile/:id").get(isAuthenticated, GetProfile);
 router.route("/otherUsers/:id").get(isAuthenticated, GetOtherUsers);
+router.route("/follow/:id").post(isAuthenticated, FollowUser);
 router.route("/bookmark/:id").put(isAuthenticated, BookmarkTweet);
 
 export default router;

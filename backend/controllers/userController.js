@@ -160,3 +160,29 @@ export const GetOtherUsers = async (req, res) => {
         console.log(`Error in userController GetOtherUsers : ${error}`);
     }
 };
+
+export const FollowUser = async (req, res) => {
+    try {
+        const currentUserId = req.body.id;
+        const userId = req.params.id;
+
+        const currentUser = await User.findById(currentUserId);
+        const user = await User.findById(userId);
+
+        if (!user.followers.includes(currentUserId)) {
+            await user.updateOne({ $push: { followers: currentUserId } });
+            await currentUser.updateOne({ $push: { following: userId } });
+            return res.status(200).json({
+                message: `Started following ${user.name}`,
+            });
+        } else {
+            await user.updateOne({ $pull: { followers: currentUserId } });
+            await currentUser.updateOne({ $pull: { following: userId } });
+            return res.status(200).json({
+                message: `Unfollowed ${user.name}`,
+            });
+        }
+    } catch (error) {
+        console.log(`Error in userController FollowUser : ${error}`);
+    }
+};
