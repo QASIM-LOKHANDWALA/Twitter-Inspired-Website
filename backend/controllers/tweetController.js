@@ -1,4 +1,5 @@
 import { Tweet } from "../models/tweetSchema.js";
+import { User } from "../models/userSchema.js";
 
 export const CreateTweet = async (req, res) => {
     try {
@@ -59,5 +60,42 @@ export const LikeOrDislikeTweet = async (req, res) => {
         }
     } catch (error) {
         console.log(`Error in tweetController LikeOrDislikeTweet : ${error}`);
+    }
+};
+
+export const GetTweets = async (req, res) => {
+    try {
+        const id = req.user;
+        const currentUser = await User.findById(id);
+        const userTweets = await Tweet.find({ userId: id });
+        const followingUserTweets = await Promise.all(
+            currentUser.following.map((userId) => {
+                return Tweet.find({ userId: userId });
+            })
+        );
+        return res.status(200).json({
+            tweets: userTweets.concat(...followingUserTweets),
+            success: true,
+        });
+    } catch (error) {
+        console.log(`Error in tweetController GetTweets : ${error}`);
+    }
+};
+
+export const GetFollowingTweets = async (req, res) => {
+    try {
+        const id = req.user;
+        const currentUser = await User.findById(id);
+        const followingUserTweets = await Promise.all(
+            currentUser.following.map((userId) => {
+                return Tweet.find({ userId: userId });
+            })
+        );
+        return res.status(200).json({
+            tweets: followingUserTweets,
+            success: true,
+        });
+    } catch (error) {
+        console.log(`Error in tweetController GetFollowingTweets : ${error}`);
     }
 };
