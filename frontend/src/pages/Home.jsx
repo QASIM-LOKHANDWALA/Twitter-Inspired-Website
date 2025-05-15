@@ -5,10 +5,12 @@ import RightSideBar from "../components/RightSideBar";
 import { Outlet } from "react-router-dom";
 import useOtherUsers from "../hooks/useOtherUsers";
 import { useSelector } from "react-redux";
+import useMyTweets from "../hooks/useMyTweets";
 
 const Home = () => {
     const { user, otherUsers } = useSelector((store) => store.user);
     useOtherUsers(user?._id);
+    useMyTweets();
 
     return (
         <div className="flex justify-between w-[80%] mx-auto">

@@ -22,7 +22,7 @@ const useUserProfile = (id) => {
             }
         };
         fetchProfile();
-    }, []);
+    }, [id]);
 };
 
 export default useUserProfile;

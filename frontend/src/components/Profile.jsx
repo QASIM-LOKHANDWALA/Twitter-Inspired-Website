@@ -1,13 +1,14 @@
 import React from "react";
 import { MdArrowBack } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Avatar from "react-avatar";
 import useUserProfile from "../hooks/useUserProfile";
 import { useSelector } from "react-redux";
 
 const Profile = () => {
     const { user, profile } = useSelector((store) => store.user);
-    useUserProfile(user?._id);
+    const { id } = useParams();
+    useUserProfile(id);
 
     return (
         <div className="w-[50%] border-l border-r border-gray-200">

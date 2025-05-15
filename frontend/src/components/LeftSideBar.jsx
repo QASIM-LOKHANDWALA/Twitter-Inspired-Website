@@ -10,8 +10,11 @@ import {
 } from "react-icons/md";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const LeftSideBar = () => {
+    const { user } = useSelector((store) => store.user);
+
     return (
         <div className="w-[20%]">
             <div>
@@ -40,7 +43,7 @@ const LeftSideBar = () => {
                     <h1 className="font-semibold text-lg ml-2">Notification</h1>
                 </div>
                 <Link
-                    to="/profile"
+                    to={`/profile/${user?._id}`}
                     className="flex items-center my-2 px-4 py-2 hover:bg-gray-100 rounded-full cursor-pointer"
                 >
                     <FaRegCircleUser size="24px" />

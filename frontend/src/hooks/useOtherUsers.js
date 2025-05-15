@@ -18,7 +18,7 @@ const useOtherUsers = (id) => {
                 console.log(res);
                 dispatch(getOtherUsers(res?.data?.otherUsers));
             } catch (error) {
-                console.log(`Error in useUserProfile : ${error}`);
+                console.log(`Error in useOtherUsers : ${error}`);
             }
         };
         fetchOtherUsers();

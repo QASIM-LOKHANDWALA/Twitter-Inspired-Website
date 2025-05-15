@@ -1,5 +1,6 @@
 import React from "react";
 import Avatar from "react-avatar";
+import { Link } from "react-router-dom";
 
 import { IoMdSearch } from "react-icons/io";
 
@@ -38,9 +39,11 @@ const RightSideBar = ({ otherUsers }) => {
                                 </div>
                             </div>
                             <div>
-                                <button className="px-4 py-1 bg-black text-white rounded-full">
-                                    Profile
-                                </button>
+                                <Link to={`/profile/${user._id}`}>
+                                    <button className="px-4 py-1 bg-black text-white rounded-full">
+                                        Profile
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     );

@@ -4,7 +4,7 @@ import Avatar from "react-avatar";
 import { MdOutlineModeComment, MdOutlineBookmarkBorder } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
 
-const Tweet = () => {
+const Tweet = ({ tweet }) => {
     return (
         <div className="border-b">
             <div>
@@ -22,7 +22,9 @@ const Tweet = () => {
                             </p>
                         </div>
 
-                        <div>Hello, First Tweet</div>
+                        <div>
+                            <p>{tweet?.description}</p>
+                        </div>
 
                         <div className="flex justify-between my-2">
                             <div className="flex items-center">
@@ -35,7 +37,7 @@ const Tweet = () => {
                                 <div className="p-2 hover:bg-blue-100 rounded-full cursor-pointer">
                                     <IoMdHeartEmpty size="24px" />
                                 </div>
-                                <p>0</p>
+                                <p>{tweet?.like?.length}</p>
                             </div>
                             <div className="flex items-center">
                                 <div className="p-2 hover:bg-blue-100 rounded-full cursor-pointer">
