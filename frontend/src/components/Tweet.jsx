@@ -16,9 +16,11 @@ const Tweet = ({ tweet }) => {
                     />
                     <div className="ml-2 w-full">
                         <div className="flex items-center">
-                            <h1 className="font-bold">Random User</h1>
+                            <h1 className="font-bold">
+                                {tweet?.userDetails[0].name}
+                            </h1>
                             <p className="text-gray-500 text-sm ml-1">
-                                @random_user
+                                @{tweet?.userDetails[0].username}
                             </p>
                         </div>
 
