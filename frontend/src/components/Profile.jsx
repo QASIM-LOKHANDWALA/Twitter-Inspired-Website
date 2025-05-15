@@ -2,8 +2,13 @@ import React from "react";
 import { MdArrowBack } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Avatar from "react-avatar";
+import useUserProfile from "../hooks/useUserProfile";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
+    const { user, profile } = useSelector((store) => store.user);
+    useUserProfile(user?._id);
+
     return (
         <div className="w-[50%] border-l border-r border-gray-200">
             <div className="relative">
@@ -15,7 +20,7 @@ const Profile = () => {
                         <MdArrowBack size="24px" />
                     </Link>
                     <div className="ml-4">
-                        <h1 className="font-bold text-lg">Random User</h1>
+                        <h1 className="font-bold text-lg">{profile?.name}</h1>
                         <p className="text-sm text-gray-500">10 posts</p>
                     </div>
                 </div>
@@ -37,8 +42,8 @@ const Profile = () => {
                     </button>
                 </div>
                 <div className="m-4">
-                    <h1 className="font-bold text-xl">Random User</h1>
-                    <p>@random_user</p>
+                    <h1 className="font-bold text-xl">{profile?.name}</h1>
+                    <p>@{profile?.username}</p>
                 </div>
                 <div className="m-4 text-sm">
                     <p>

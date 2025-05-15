@@ -79,9 +79,13 @@ export const Login = async (req, res) => {
         });
         return res
             .status(201)
-            .cookie("token", token, { expiresIn: "1d", httpOnly: true })
+            .cookie("token", token, {
+                maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+                httpOnly: true,
+            })
             .json({
                 message: "Login successfully.",
+                user,
                 success: true,
             });
     } catch (error) {

@@ -5,6 +5,7 @@ import RightSideBar from "../components/RightSideBar";
 import { Outlet } from "react-router-dom";
 
 const Home = () => {
+
     return (
         <div className="flex justify-between w-[80%] mx-auto">
             <LeftSideBar />

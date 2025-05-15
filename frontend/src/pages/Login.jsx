@@ -4,6 +4,8 @@ import { USER_API_ENDPOINT } from "../utils/constants";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getUser } from "../redux/userSlice";
 
 const Login = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +17,8 @@ const Login = () => {
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
+
+    const dispatch = useDispatch();
 
     const loginSignupHandler = () => {
         setIsLogin(!isLogin);
@@ -36,10 +40,12 @@ const Login = () => {
                         headers: {
                             "Content-Type": "application/json",
                         },
+                        withCredentials: true,
                     }
                 );
                 if (res.data && res.data.success) {
                     navigate("/");
+                    dispatch(getUser(res?.data?.user));
                     toast.success(res.data.message);
                 }
             } else {
@@ -55,6 +61,7 @@ const Login = () => {
                         headers: {
                             "Content-Type": "application/json",
                         },
+                        withCredentials: true,
                     }
                 );
                 if (res.data && res.data.success) {
