@@ -3,6 +3,7 @@ import { assets } from "../assets/assets";
 import { USER_API_ENDPOINT } from "../utils/constants";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -12,6 +13,8 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const navigate = useNavigate();
 
     const loginSignupHandler = () => {
         setIsLogin(!isLogin);
@@ -36,6 +39,7 @@ const Login = () => {
                     }
                 );
                 if (res.data && res.data.success) {
+                    navigate("/");
                     toast.success(res.data.message);
                 }
             } else {
@@ -54,6 +58,7 @@ const Login = () => {
                     }
                 );
                 if (res.data && res.data.success) {
+                    setIsLogin(true);
                     toast.success(res.data.message);
                 }
             }
