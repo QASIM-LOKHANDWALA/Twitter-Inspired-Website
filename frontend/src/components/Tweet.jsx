@@ -3,8 +3,33 @@ import Avatar from "react-avatar";
 
 import { MdOutlineModeComment, MdOutlineBookmarkBorder } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
+import axios from "axios";
+import { TWEET_API_ENDPOINT } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { getRefresh } from "../redux/tweetSlice";
+import toast from "react-hot-toast";
 
 const Tweet = ({ tweet }) => {
+    const dispatch = useDispatch();
+
+    const likeHandler = async (id) => {
+        try {
+            const res = await axios.put(
+                `${TWEET_API_ENDPOINT}/like/${id}`,
+                {},
+                {
+                    withCredentials: true,
+                }
+            );
+            console.log(res);
+
+            dispatch(getRefresh());
+        } catch (error) {
+            toast.error(error.response.data.error);
+            console.log(`Error in likeHandler : ${error}`);
+        }
+    };
+
     return (
         <div className="border-b">
             <div>
@@ -36,7 +61,10 @@ const Tweet = ({ tweet }) => {
                                 <p>0</p>
                             </div>
                             <div className="flex items-center">
-                                <div className="p-2 hover:bg-blue-100 rounded-full cursor-pointer">
+                                <div
+                                    onClick={() => likeHandler(tweet?._id)}
+                                    className="p-2 hover:bg-blue-100 rounded-full cursor-pointer"
+                                >
                                     <IoMdHeartEmpty size="24px" />
                                 </div>
                                 <p>{tweet?.like?.length}</p>
