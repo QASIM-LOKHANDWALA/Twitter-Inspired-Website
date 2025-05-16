@@ -1,16 +1,21 @@
 import React from "react";
 import Avatar from "react-avatar";
 
-import { MdOutlineModeComment, MdOutlineBookmarkBorder } from "react-icons/md";
+import {
+    MdOutlineModeComment,
+    MdOutlineBookmarkBorder,
+    MdDeleteOutline,
+} from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
 import axios from "axios";
 import { TWEET_API_ENDPOINT } from "../utils/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getRefresh } from "../redux/tweetSlice";
 import toast from "react-hot-toast";
 
 const Tweet = ({ tweet }) => {
     const dispatch = useDispatch();
+    const { user } = useSelector((store) => store.user);
 
     const likeHandler = async (id) => {
         try {
@@ -27,6 +32,25 @@ const Tweet = ({ tweet }) => {
         } catch (error) {
             toast.error(error.response.data.error);
             console.log(`Error in likeHandler : ${error}`);
+        }
+    };
+
+    const deleteHandler = async (id) => {
+        try {
+            const res = await axios.delete(
+                `${TWEET_API_ENDPOINT}/delete/${id}`,
+                {
+                    withCredentials: true,
+                }
+            );
+            console.log("========== Delete Response =============");
+            
+            console.log(res);
+
+            dispatch(getRefresh());
+        } catch (error) {
+            toast.error(error.response.data.error);
+            console.log(`Error in deleteHandler : ${error}`);
         }
     };
 
@@ -75,6 +99,18 @@ const Tweet = ({ tweet }) => {
                                 </div>
                                 <p>0</p>
                             </div>
+                            {tweet.userId == user._id && (
+                                <div className="flex items-center">
+                                    <div
+                                        onClick={() =>
+                                            deleteHandler(tweet?._id)
+                                        }
+                                        className="p-2 hover:bg-blue-100 rounded-full cursor-pointer"
+                                    >
+                                        <MdDeleteOutline size="24px" />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
