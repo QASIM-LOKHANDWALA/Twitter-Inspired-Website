@@ -3,12 +3,37 @@ import { MdArrowBack } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import Avatar from "react-avatar";
 import useUserProfile from "../hooks/useUserProfile";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { USER_API_ENDPOINT } from "../utils/constants";
+import toast from "react-hot-toast";
+import { getFollowRefresh } from "../redux/userSlice";
 
 const Profile = () => {
     const { user, profile } = useSelector((store) => store.user);
     const { id } = useParams();
+    const dispatch = useDispatch();
     useUserProfile(id);
+
+    const followHandler = async () => {
+        try {
+            const res = await axios.post(
+                `${USER_API_ENDPOINT}/follow/${id}`,
+                {
+                    id: user?._id,
+                },
+                {
+                    withCredentials: true,
+                }
+            );
+            console.log("========== followHandler ==========");
+            console.log(res);
+            dispatch(getFollowRefresh(id));
+            toast.success(res?.data?.message);
+        } catch (error) {
+            console.log(`Error in followHandler : ${error}`);
+        }
+    };
 
     return (
         <div className="w-[50%] border-l border-r border-gray-200">
@@ -38,9 +63,20 @@ const Profile = () => {
                     />
                 </div>
                 <div className="text-right m-4">
-                    <button className="px-2 py-1 rounded-full border border-gray-400 hover:bg-gray-200">
-                        Edit Profile
-                    </button>
+                    {user?._id == profile?._id ? (
+                        <button className="px-2 py-1 rounded-full border border-gray-400 hover:bg-gray-200">
+                            Edit Profile
+                        </button>
+                    ) : (
+                        <button
+                            onClick={followHandler}
+                            className="px-2 py-1 bg-black text-white rounded-full border border-gray-400 hover:bg-gray-900"
+                        >
+                            {user?.following.includes(id)
+                                ? "Unfollow"
+                                : "Follow"}
+                        </button>
+                    )}
                 </div>
                 <div className="m-4">
                     <h1 className="font-bold text-xl">{profile?.name}</h1>
