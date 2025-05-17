@@ -8,6 +8,7 @@ import axios from "axios";
 import { USER_API_ENDPOINT } from "../utils/constants";
 import toast from "react-hot-toast";
 import { getFollowRefresh } from "../redux/userSlice";
+import { getRefresh } from "../redux/tweetSlice";
 
 const Profile = () => {
     const { user, profile } = useSelector((store) => store.user);
@@ -29,6 +30,7 @@ const Profile = () => {
             console.log("========== followHandler ==========");
             console.log(res);
             dispatch(getFollowRefresh(id));
+            dispatch(getRefresh());
             toast.success(res?.data?.message);
         } catch (error) {
             console.log(`Error in followHandler : ${error}`);
