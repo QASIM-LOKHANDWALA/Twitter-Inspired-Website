@@ -26,9 +26,19 @@ const userSlice = createSlice({
                 state.user.following.push(action.payload);
             }
         },
+        getLogoutCleared: (state) => {
+            state.user = null;
+            state.otherUsers = null;
+            state.profile = null;
+        },
     },
 });
 
-export const { getUser, getOtherUsers, getProfile, getFollowRefresh } =
-    userSlice.actions;
+export const {
+    getUser,
+    getOtherUsers,
+    getProfile,
+    getFollowRefresh,
+    getLogoutCleared,
+} = userSlice.actions;
 export default userSlice.reducer;

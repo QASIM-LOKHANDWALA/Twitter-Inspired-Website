@@ -9,11 +9,28 @@ import {
     MdLogout,
 } from "react-icons/md";
 import { FaRegCircleUser } from "react-icons/fa6";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { USER_API_ENDPOINT } from "../utils/constants";
+import toast from "react-hot-toast";
+import { getLogoutCleared, getUser } from "../redux/userSlice";
 
 const LeftSideBar = () => {
     const { user } = useSelector((store) => store.user);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const logoutHandler = async () => {
+        try {
+            const res = await axios.get(`${USER_API_ENDPOINT}/logout`);
+            dispatch(getLogoutCleared());
+            toast.success(res?.data?.message);
+            navigate("/login");
+        } catch (error) {
+            console.log(`Error in logoutHandler : ${error}`);
+        }
+    };
 
     return (
         <div className="w-[20%]">
@@ -53,7 +70,10 @@ const LeftSideBar = () => {
                     <MdFavoriteBorder size="24px" />
                     <h1 className="font-semibold text-lg ml-2">Favorites</h1>
                 </div>
-                <div className="flex items-center my-2 px-4 py-2 hover:bg-gray-100 rounded-full cursor-pointer">
+                <div
+                    onClick={logoutHandler}
+                    className="flex items-center my-2 px-4 py-2 hover:bg-gray-100 rounded-full cursor-pointer"
+                >
                     <MdLogout size="24px" />
                     <h1 className="font-semibold text-lg ml-2">Logout</h1>
                 </div>
