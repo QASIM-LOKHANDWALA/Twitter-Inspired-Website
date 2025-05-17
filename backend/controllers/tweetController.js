@@ -93,7 +93,7 @@ export const GetFollowingTweets = async (req, res) => {
             })
         );
         return res.status(200).json({
-            tweets: followingUserTweets,
+            tweets: [].concat(...followingUserTweets),
             success: true,
         });
     } catch (error) {

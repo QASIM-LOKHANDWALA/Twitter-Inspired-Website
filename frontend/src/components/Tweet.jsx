@@ -43,9 +43,6 @@ const Tweet = ({ tweet }) => {
                     withCredentials: true,
                 }
             );
-            console.log("========== Delete Response =============");
-            
-            console.log(res);
 
             dispatch(getRefresh());
         } catch (error) {

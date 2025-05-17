@@ -6,21 +6,40 @@ import { getMyTweets } from "../redux/tweetSlice";
 
 const useMyTweets = (id) => {
     const dispatch = useDispatch();
-    const { refresh } = useSelector((store) => store.tweet);
+    const { refresh, isActive } = useSelector((store) => store.tweet);
+
+    const fetchMyTweets = async () => {
+        try {
+            const res = await axios.get(`${TWEET_API_ENDPOINT}/getTweets`, {
+                withCredentials: true,
+            });
+            console.log(res);
+            dispatch(getMyTweets(res?.data?.tweets));
+        } catch (error) {
+            console.log(`Error in useMyTweets : ${error}`);
+        }
+    };
+
+    const fetchFollowingTweets = async () => {
+        try {
+            axios.defaults.withCredentials = true;
+            const res = await axios.get(
+                `${TWEET_API_ENDPOINT}/getFollowingTweets`
+            );
+            console.log("========== followingTweetHandler ==========");
+            console.log(res);
+            dispatch(getMyTweets(res?.data?.tweets));
+        } catch (error) {
+            console.log(
+                `Error in fetching tweet inside followingTweetHandler : ${error}`
+            );
+        }
+    };
+
     useEffect(() => {
-        const fetchMyTweets = async () => {
-            try {
-                const res = await axios.get(`${TWEET_API_ENDPOINT}/getTweets`, {
-                    withCredentials: true,
-                });
-                console.log(res);
-                dispatch(getMyTweets(res?.data?.tweets));
-            } catch (error) {
-                console.log(`Error in useMyTweets : ${error}`);
-            }
-        };
-        fetchMyTweets();
-    }, [refresh]);
+        if (isActive) fetchMyTweets();
+        else fetchFollowingTweets();
+    }, [refresh, isActive]);
 };
 
 export default useMyTweets;

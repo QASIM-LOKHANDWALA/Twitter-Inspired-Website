@@ -6,10 +6,11 @@ import axios from "axios";
 import { TWEET_API_ENDPOINT } from "../utils/constants";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { getRefresh } from "../redux/tweetSlice";
+import { getIsActive, getMyTweets, getRefresh } from "../redux/tweetSlice";
 
 const CreatePost = () => {
     const { user } = useSelector((store) => store.user);
+    const { isActive } = useSelector((store) => store.tweet);
     const dispatch = useDispatch();
 
     const [description, setDescription] = useState("");
@@ -39,16 +40,37 @@ const CreatePost = () => {
         setDescription("");
     };
 
+    const forYouHandler = () => {
+        dispatch(getIsActive(true));
+    };
+    const followingHandler = () => {
+        dispatch(getIsActive(false));
+    };
+
     return (
         <div className="w-[100%]">
             <div>
                 <div className="flex items-center justify-evenly border border-b border-gray-100">
-                    <div className="hover:bg-gray-100  w-full cursor-pointer text-center px-4 py-3">
+                    <div
+                        onClick={forYouHandler}
+                        className={`hover:bg-gray-100  w-full cursor-pointer text-center px-4 py-3 ${
+                            isActive
+                                ? "border-b-3 border-blue-600"
+                                : "border-b-3 border-transparent"
+                        }`}
+                    >
                         <h1 className="font-semibold text-gray-700 text-lg">
                             For You
                         </h1>
                     </div>
-                    <div className="hover:bg-gray-100 w-full cursor-pointer text-center px-4 py-3">
+                    <div
+                        onClick={followingHandler}
+                        className={`hover:bg-gray-100 w-full cursor-pointer text-center px-4 py-3 ${
+                            !isActive
+                                ? "border-b-3 border-blue-600"
+                                : "border-b-3 border-transparent"
+                        }`}
+                    >
                         <h1 className="font-semibold text-gray-700 text-lg">
                             Following
                         </h1>
